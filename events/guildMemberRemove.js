@@ -3,9 +3,7 @@ const { Events, AuditLogEvent, EmbedBuilder, ActionRowBuilder, ButtonBuilder, Bu
 module.exports = {
 	name: Events.GuildMemberRemove,
 	async execute(member) {
-		console.log(`[DEBUG] Member left: ${member.user.tag}`);
 		const guild = member.guild;
-		const user = member.user;
 		const logChannelId = process.env.LOGCHANNELID;
 
 		const logChannel = guild.channels.cache.get(logChannelId);
@@ -18,21 +16,35 @@ module.exports = {
 
 		// Find the most recent entry for this user within the last 5 seconds
 		const now = Date.now();
-		const kickLog = fetchedLogs.entries.find(entry =>
-			entry.target.id === user.id &&
-			(now - entry.createdTimestamp) < 5000 // 5 seconds
+		const auditEntry = fetchedLogs.entries.find(entry =>
+			entry.target.id === member.id &&
+			(now - entry.createdTimestamp) < 5000,
 		);
 
-		if (!kickLog) {
-			console.warn(`No matching audit log entry found for kicked user ${user.tag}`);
+		// if no matching log entry, return
+		if (!auditEntry) return;
+
+		let { executor, reason } = auditEntry;
+		const { target } = auditEntry;
+
+		// processing reason and executor
+		if (executor.id == '593921296224747521') {
+			// quering reason for mod username & reason
+			const parts = reason.split('User Responsible: ')[1].split(' / ');
+			const modUsername = parts[0];
+			reason = parts[1].toLowerCase();
+			const guildMembers = await guild.members.fetch({ query: modUsername, limit: 10 });
+			executor = guildMembers.find(m => m.user.username === modUsername).user;
+			if (!executor) return;
+		}
+		else if (executor.bot) {
+			console.log('bot executor found that\'s not bleed, ignoring');
 			return;
 		}
 
-		const { executor, target, reason } = kickLog;
-
 		const logEmbed = new EmbedBuilder()
 			.setAuthor({
-				name: 'banned by ' + executor.username,
+				name: 'kicked by ' + executor.username,
 				iconURL: executor.avatarURL(),
 			})
 			.setTitle('<:070:1387872131983081504>    ⸻ kick proof !*!*')

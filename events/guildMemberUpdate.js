@@ -39,25 +39,28 @@ module.exports = {
 		let { executor, reason } = auditEntry;
 
 		// processing reason and executor
-		if (executor.bot && executor.id !== '593921296224747521') return;
 		if (executor.id == '593921296224747521') {
 			// quering reason for mod username & reason
-			reason = reason?.split('for ').slice(1).join('for ') || 'no reason provided';
-			const modUsername = reason?.split('Jailed by ')[1]?.split(' for ')[0]?.trim();
+			const modUsername = reason?.match(/^Jailed by (.+?) for /)?.[1];
+			reason = reason?.split('for ').slice(1).join('for ').toLowerCase() || 'no reason provided';
 			const guildMembers = await newMember.guild.members.fetch({ query: modUsername, limit: 10 });
-			executor = guildMembers.find(m => m.user.username === modUsername);
+			executor = guildMembers.find(m => m.user.username === modUsername).user;
 			if (!executor) return;
+		}
+		else if (executor.bot) {
+			console.log('bot executor found that\'s not bleed, ignoring');
+			return;
 		}
 
 		// if upper if-statement isn't executed, executor is a user that added the role manually
 
 		const logEmbed = new EmbedBuilder()
 			.setAuthor({
-				name: 'banned by ' + username,
+				name: 'banned by ' + executor.username,
 				iconURL: executor.avatarURL(),
 			})
 			.setTitle('<:070:1387872131983081504>    ⸻ jail proof !*!*')
-			.setDescription('**target:** ' + target.user.username + ' (`' + target.user.id + '`)\n**moderator:** ' + executor.username + ' (`' + executor.id + '`)\n**reason:** ' + (newReason || 'no reason provided') + '\n**proof:** *waiting for proof submission...*')
+			.setDescription('**target:** ' + target.user.username + ' (`' + target.user.id + '`)\n**moderator:** ' + executor.username + ' (`' + executor.id + '`)\n**reason:** ' + (reason || 'no reason provided') + '\n**proof:** *waiting for proof submission...*')
 			.setColor('#b8ebff')
 			.setFooter({
 				text: 'thank you for keeping the server safe <3',
