@@ -17,6 +17,7 @@ const client = new Client({
 	partials: [Partials.Channel, Partials.GuildMember],
 });
 
+/*
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -35,6 +36,7 @@ for (const folder of commandFolders) {
 		}
 	}
 }
+*/
 
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
