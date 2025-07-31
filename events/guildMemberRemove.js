@@ -44,7 +44,7 @@ module.exports = {
 
 		const logEmbed = new EmbedBuilder()
 			.setAuthor({
-				name: 'kicked by ' + executor.username,
+				name: 'kick log',
 				iconURL: executor.avatarURL(),
 			})
 			.setTitle('<:070:1387872131983081504>    ⸻ kick proof !*!*')

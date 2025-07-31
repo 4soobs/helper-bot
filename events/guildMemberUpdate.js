@@ -56,7 +56,7 @@ module.exports = {
 
 		const logEmbed = new EmbedBuilder()
 			.setAuthor({
-				name: 'banned by ' + executor.username,
+				name: 'jail log',
 				iconURL: executor.avatarURL(),
 			})
 			.setTitle('<:070:1387872131983081504>    ⸻ jail proof !*!*')

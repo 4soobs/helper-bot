@@ -43,10 +43,10 @@ module.exports = {
 
 		const logEmbed = new EmbedBuilder()
 			.setAuthor({
-				name: 'banned by ' + executor.username,
+				name: 'ban log',
 				iconURL: executor.avatarURL(),
 			})
-			.setTitle('<:070:1387872131983081504>    ⸻ kick proof !*!*')
+			.setTitle('<:070:1387872131983081504>    ⸻ ban proof !*!*')
 			.setDescription('**target:** ' + target.username + ' (`' + target.id + '`)\n**moderator:** ' + executor.username + ' (`' + executor.id + '`)\n**reason:** ' + (reason || 'no reason provided') + '\n**proof:** *waiting for proof submission...*')
 			.setColor('#b8ebff')
 			.setFooter({
