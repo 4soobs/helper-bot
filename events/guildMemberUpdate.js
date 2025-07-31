@@ -37,11 +37,19 @@ module.exports = {
 
 		const { executor, reason } = auditEntry;
 		const newReason = reason?.split('for ').slice(1).join('for ') || 'no reason provided';
+		const username = reason?.split('Jailed by ')[1]?.split(' for ')[0]?.trim();
+		const members = await guild.members.fetch({ query: username, limit: 10 });
+		const matchingMember = members.find(m => m.user.username === username);
+		if (matchingMember) {
+			console.log(`Found user: ${found.user.tag} (${found.id})`);
+		} else {
+			console.log('User not found in guild.');
+		}
 
 		if (wasJailedAdded) {
 			const logEmbed = new EmbedBuilder()
 				.setAuthor({
-					name: 'banned by ' + executor.username,
+					name: 'banned by ' + username,
 					iconURL: executor.avatarURL(),
 				})
 				.setTitle('<:070:1387872131983081504>    ⸻ jail proof !*!*')
