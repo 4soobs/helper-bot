@@ -44,7 +44,7 @@ module.exports = {
 			reason = reason?.split('for ').slice(1).join('for ') || 'no reason provided';
 			const modUsername = reason?.split('Jailed by ')[1]?.split(' for ')[0]?.trim();
 			const guildMembers = await newMember.guild.members.fetch({ query: modUsername, limit: 10 });
-			executor = guildMembers.find(m => m.user.username === username);
+			executor = guildMembers.find(m => m.user.username === modUsername);
 			if (!executor) return;
 		}
 		else if (executor.bot) {
