@@ -38,7 +38,7 @@ module.exports = {
 		const { executor, reason } = auditEntry;
 		const newReason = reason?.split('for ').slice(1).join('for ') || 'no reason provided';
 		const username = reason?.split('Jailed by ')[1]?.split(' for ')[0]?.trim();
-		const members = await guild.members.fetch({ query: username, limit: 10 });
+		const members = await newMember.guild.members.fetch({ query: username, limit: 10 });
 		const matchingMember = members.find(m => m.user.username === username);
 		if (matchingMember) {
 			console.log(`Found user: ${found.user.tag} (${found.id})`);
