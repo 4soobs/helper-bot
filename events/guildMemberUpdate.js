@@ -39,6 +39,7 @@ module.exports = {
 		let { executor, reason } = auditEntry;
 
 		// processing reason and executor
+		if (executor.bot && executor.id !== '593921296224747521') return;
 		if (executor.id == '593921296224747521') {
 			// quering reason for mod username & reason
 			reason = reason?.split('for ').slice(1).join('for ') || 'no reason provided';
@@ -46,10 +47,6 @@ module.exports = {
 			const guildMembers = await newMember.guild.members.fetch({ query: modUsername, limit: 10 });
 			executor = guildMembers.find(m => m.user.username === modUsername);
 			if (!executor) return;
-		}
-		else if (executor.bot) {
-			// executor is a bot but not bleed, return
-			return;
 		}
 
 		// if upper if-statement isn't executed, executor is a user that added the role manually
