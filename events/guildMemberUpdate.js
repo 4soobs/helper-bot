@@ -41,7 +41,7 @@ module.exports = {
 		const members = await newMember.guild.members.fetch({ query: username, limit: 10 });
 		const matchingMember = members.find(m => m.user.username === username);
 		if (matchingMember) {
-			console.log(`Found user: ${found.user.tag} (${found.id})`);
+			console.log(`Found user: ${matchingMember.user.tag} (${matchingMember.id})`);
 		} else {
 			console.log('User not found in guild.');
 		}
@@ -53,7 +53,7 @@ module.exports = {
 					iconURL: executor.avatarURL(),
 				})
 				.setTitle('<:070:1387872131983081504>    ⸻ jail proof !*!*')
-				.setDescription('**target:** ' + target.user.username + ' (`' + target.user.id + '`)\n**moderator:** ' + executor.username + ' (`' + executor.id + '`)\n**reason:** ' + (newReason || 'no reason provided') + '\n**proof:** *waiting for proof submission...*')
+				.setDescription('**target:** ' + target.user.username + ' (`' + target.user.id + '`)\n**moderator:** ' + username + ' (`' + matchingMember.id + '`)\n**reason:** ' + (newReason || 'no reason provided') + '\n**proof:** *waiting for proof submission...*')
 				.setColor('#b8ebff')
 				.setFooter({
 					text: 'thank you for keeping the server safe <3',
@@ -69,7 +69,7 @@ module.exports = {
 			const btnRow = new ActionRowBuilder()
 				.addComponents(proofSubmitBtn);
 
-			await logChannel.send({ content: '<@' + executor.id + '>', embeds: [logEmbed], components: [btnRow] });
+			await logChannel.send({ content: '<@' + matchingMember.id + '>', embeds: [logEmbed], components: [btnRow] });
 		}
 	},
 };
