@@ -59,6 +59,16 @@ module.exports = {
 					return;
 				}
 
+				if (message.hasThread) {
+					try {
+						await message.thread.delete('Thread cleanup reason');
+						console.log('Thread deleted.');
+					}
+					catch (error) {
+						console.error('Failed to delete thread:', error);
+					}
+				}
+
 				const logMsg = interaction.message;
 				const embed = logMsg.embeds[0];
 				if (!embed?.description) return;
