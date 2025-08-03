@@ -59,9 +59,9 @@ module.exports = {
 					return;
 				}
 
-				if (message.hasThread) {
+				if (interaction.message.hasThread) {
 					try {
-						await message.thread.delete('Thread cleanup reason');
+						await interaction.message.thread.delete('Thread cleanup reason');
 						console.log('Thread deleted.');
 					}
 					catch (error) {
