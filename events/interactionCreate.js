@@ -60,13 +60,11 @@ module.exports = {
 				}
 
 				if (interaction.message.hasThread) {
-					try {
-						await interaction.message.thread.delete('Thread cleanup reason');
-						console.log('Thread deleted.');
-					}
-					catch (error) {
-						console.error('Failed to delete thread:', error);
-					}
+					await interaction.reply({
+						content: `there's already a thread for this case: <#${interaction.message.thread.id}>. please use that one!`,
+						flags: MessageFlags.Ephemeral,
+					});
+					return;
 				}
 
 				const logMsg = interaction.message;
